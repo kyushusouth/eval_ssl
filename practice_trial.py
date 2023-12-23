@@ -24,14 +24,19 @@ class MyAudio(Audio):
 
 
 @st.cache_data
+def fix_random_seed():
+    seed = random.randint(0, 10 ** 9)
+    random.seed(seed)
+
+
+@st.cache_data
 def load_data(_conn, bucket_name, data_dir):
-    st.write("load")
     data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
     return data_path_list
 
 
 def main():
-    random.seed(random.randint(0, 10 ** 9))
+    fix_random_seed()
     
     if not "finished" in st.session_state:
         st.session_state.finished = False
