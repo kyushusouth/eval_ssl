@@ -25,6 +25,7 @@ class MyAudio(Audio):
 
 @st.cache_data
 def load_data(_conn, bucket_name, data_dir):
+    st.write("load")
     data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
     return data_path_list
 
