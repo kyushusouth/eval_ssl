@@ -26,7 +26,6 @@ class MyAudio(Audio):
 @st.cache_data
 def load_data(_conn, bucket_name, data_dir):
     data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
-    data_path_list = random.sample(data_path_list, len(data_path_list))
     return data_path_list
 
 
@@ -42,6 +41,7 @@ def main():
     result_dir = st.secrets["result_dir"]
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
+    data_path_list = random.sample(data_path_list, len(data_path_list))
         
     label1_list = []
     label2_list = []
