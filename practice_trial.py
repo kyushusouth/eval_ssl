@@ -4,7 +4,7 @@ from IPython.display import Audio
 import random
 import datetime
 
-DEBUG = False
+DEBUG = True
 
 
 class MyAudio(Audio):
