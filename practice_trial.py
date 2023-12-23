@@ -34,6 +34,11 @@ def main():
     
     if not "finished" in st.session_state:
         st.session_state.finished = False
+    if not "randomized" in st.session_state:
+        st.session_state.randomized = False
+        
+    st.write("finished", st.session_state.finished)
+    st.write("randomized", st.session_state.randomized)
         
     conn = st.connection("s3", type=FilesConnection)
     bucket_name = st.secrets["bucket_name"]
@@ -41,8 +46,11 @@ def main():
     result_dir = st.secrets["result_dir"]
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
-    data_path_list = random.sample(data_path_list, len(data_path_list))
-    st.write("here")
+    
+    if not st.session_state.randomized:
+        st.session_state.randomized = True
+        data_path_list = random.sample(data_path_list, len(data_path_list))
+        st.write("here")
         
     label1_list = []
     label2_list = []
