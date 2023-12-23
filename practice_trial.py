@@ -50,7 +50,6 @@ def main():
         data_path_list = random.sample(data_path_list, len(data_path_list))
         st.write("here")
         st.session_state.randomized = True
-        st.rerun()
         
     label1_list = []
     label2_list = []
