@@ -24,9 +24,10 @@ class MyAudio(Audio):
 
 
 @st.cache_data
-def fix_random_seed():
+def fix_random_seed(n):
     seed = random.randint(0, 10 ** 9)
-    random.seed(seed)
+    st.write(seed)
+    return seed
 
 
 @st.cache_data
@@ -36,7 +37,7 @@ def load_data(_conn, bucket_name, data_dir):
 
 
 def main():
-    fix_random_seed()
+    random.seed(fix_random_seed(42))
     
     if not "finished" in st.session_state:
         st.session_state.finished = False
