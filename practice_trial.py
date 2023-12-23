@@ -31,7 +31,9 @@ def load_data(_conn, bucket_name, data_dir):
 
 
 def main():
-    if "finished" not in st.session_state:
+    random.seed(random.randint(0, 10 ** 9))
+    
+    if not "finished" in st.session_state:
         st.session_state.finished = False
         
     conn = st.connection("s3", type=FilesConnection)
@@ -40,6 +42,7 @@ def main():
     result_dir = st.secrets["result_dir"]
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
+        
     label1_list = []
     label2_list = []
     label3_list = []
