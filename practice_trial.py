@@ -42,6 +42,7 @@ def main():
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
     data_path_list = random.sample(data_path_list, len(data_path_list))
+    st.write("here")
         
     label1_list = []
     label2_list = []
