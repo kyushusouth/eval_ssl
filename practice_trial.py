@@ -46,6 +46,7 @@ def main():
     data_path_list = load_data(conn, bucket_name, data_dir)
     
     if not st.session_state.randomized:
+        random.seed(random.randint(0, 1000))
         data_path_list = random.sample(data_path_list, len(data_path_list))
         st.write("here")
         st.session_state.randomized = True
