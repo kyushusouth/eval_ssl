@@ -48,10 +48,10 @@ def main():
     data_path_list = load_data(conn, bucket_name, data_dir)
     
     if not st.session_state.randomized:
-        st.session_state.randomized = True
         data_path_list = random.sample(data_path_list, len(data_path_list))
-        st.rerun()
         st.write("here")
+        st.session_state.randomized = True
+        st.rerun()
         
     label1_list = []
     label2_list = []
