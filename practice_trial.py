@@ -36,7 +36,6 @@ def main():
         st.session_state.finished = False
     if not "randomized" in st.session_state:
         st.session_state.randomized = False
-        st.write("here")
         
     st.write("finished", st.session_state.finished)
     st.write("randomized", st.session_state.randomized)
@@ -48,8 +47,9 @@ def main():
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
     
-    # if not st.session_state.randomized:
-    #     data_path_list = random.sample(data_path_list, len(data_path_list))
+    
+    if not st.session_state.randomized:
+        data_path_list = random.sample(data_path_list, len(data_path_list))
     #     st.write("here")
     #     st.session_state.randomized = True
     #     st.rerun()
