@@ -36,8 +36,9 @@ def main():
         
     conn = st.connection("s3", type=FilesConnection)
     bucket_name = st.secrets["bucket_name"]
-    data_dir = st.secrets["data_dir_practice"]
+    data_dir = st.secrets["data_dir_1"]
     result_dir = st.secrets["result_dir"]
+    serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
     label1_list = []
     label2_list = []
@@ -87,7 +88,7 @@ def main():
     elif st.session_state.finished:
         st.button("解答終了", disabled=True)
         st.write("これで実験は終了です。ありがとうございました。")
-        st.write("シリアルコード1は「193048」です。")
+        st.write(f"シリアルコード1は{serial_code}です。")
         
 
 
