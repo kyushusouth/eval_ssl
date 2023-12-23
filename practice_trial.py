@@ -72,7 +72,7 @@ def main():
         ans = st.radio(
             label=f"{label1}_{label2}_{label3}_{label4}_{label5}",
             options=("1:非常に悪い", "2:悪い", "3:普通", "4:良い", "5:非常に良い"),
-            key=f"{i}",
+            # key=f"{i}",
             horizontal=True,
             label_visibility="visible" if DEBUG else "collapsed",
             index=None,
