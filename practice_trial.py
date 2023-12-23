@@ -24,21 +24,12 @@ class MyAudio(Audio):
 
 
 @st.cache_data
-def fix_random_seed(n):
-    seed = random.randint(0, 10 ** 9)
-    st.write(seed)
-    return seed
-
-
-@st.cache_data
 def load_data(_conn, bucket_name, data_dir):
     data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
     return data_path_list
 
 
 def main():
-    random.seed(fix_random_seed(42))
-    
     if not "finished" in st.session_state:
         st.session_state.finished = False
     if not "randomized" in st.session_state:
@@ -54,12 +45,11 @@ def main():
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
     
-    
     if not st.session_state.randomized:
         data_path_list = random.sample(data_path_list, len(data_path_list))
-    #     st.write("here")
-    #     st.session_state.randomized = True
-    #     st.rerun()
+        st.write("here")
+        st.session_state.randomized = True
+        # st.rerun()
         
     label1_list = []
     label2_list = []
