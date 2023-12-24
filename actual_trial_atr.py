@@ -5,7 +5,7 @@ import random
 import datetime
 import functools
 
-DEBUG = True
+DEBUG = False
 
 
 class MyAudio(Audio):
