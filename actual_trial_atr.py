@@ -1,54 +1,10 @@
 import streamlit as st
 from st_files_connection import FilesConnection
-from IPython.display import Audio
 import random
-import datetime
 import functools
+from utils import MyAudio, load_data, finish
 
 DEBUG = False
-
-
-class MyAudio(Audio):
-    def _repr_html_(self):
-        src = """
-        <audio {element_id} controls="controls" controlsList="nodownload" {autoplay}>
-            <source src="{src}" type="{type}" />
-            Your browser does not support the audio element.
-        </audio>
-        """
-        return src.format(
-            src=self.src_attr(),
-            type=self.mimetype,
-            autoplay=self.autoplay_attr(),
-            element_id=self.element_id_attr(),
-        )
-
-
-@st.cache_data
-def load_data(_conn, bucket_name, data_dir):
-    data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
-    return data_path_list
-
-
-def finish(
-    conn,
-    bucket_name,
-    data_dir,
-    result_dir,
-    label1_list,
-    label2_list,
-    label3_list,
-    label4_list,
-    label5_list,
-    ans_list,
-):
-    st.session_state.finished = True
-    current_time = datetime.datetime.now()
-    formatted_time = current_time.strftime("%Y-%m-%d-%H-%M-%S")
-    conn.fs.mkdirs(f"{bucket_name}/{data_dir}/{result_dir}", exist_ok=True)
-    with conn.fs.open(f"{bucket_name}/{data_dir}/{result_dir}/{formatted_time}.txt", "w") as f:
-        for label1, label2, label3, label4, label5, ans in zip(label1_list, label2_list, label3_list, label4_list, label5_list, ans_list):
-            f.write(f"{label1},{label2},{label3},{label4},{label5},{ans}\n")
 
 
 def main():
@@ -69,13 +25,6 @@ def main():
     data_path_list = load_data(conn, bucket_name, data_dir)
     if not "data_path_list" in st.session_state:
         st.session_state.data_path_list = random.sample(data_path_list, len(data_path_list))
-    
-    label1_list = []
-    label2_list = []
-    label3_list = []
-    label4_list = []
-    label5_list = []
-    ans_list = []
     
     st.markdown(
         """
@@ -98,7 +47,7 @@ def main():
         - **明瞭性**：音声がどれくらい聞き取りやすいものになっているか
         
         ### 評価方法
-        **自然性**・**明瞭性**それぞれの観点で5段階評価をお願いします。
+        自然性・明瞭性それぞれの観点で5段階評価をお願いします。
         
         5段階評価における目安は以下の通りです。
         1. **非常に悪い**
@@ -122,6 +71,13 @@ def main():
         """
     )
     st.divider()
+    
+    label1_list = []
+    label2_list = []
+    label3_list = []
+    label4_list = []
+    label5_list = []
+    ans_list = []
     
     with st.form("evaluation"):
         for i, data_path in enumerate(st.session_state.data_path_list):
