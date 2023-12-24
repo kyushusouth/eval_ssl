@@ -30,27 +30,18 @@ def load_data(_conn, bucket_name, data_dir):
 
 
 def main():
-    if not "finished" in st.session_state:
-        st.session_state.finished = False
-    if not "randomized" in st.session_state:
-        st.session_state.randomized = False
-    
-    st.write("finished", st.session_state.finished)
-    st.write("randomized", st.session_state.randomized)
-        
     conn = st.connection("s3", type=FilesConnection)
     bucket_name = st.secrets["bucket_name"]
     data_dir = st.secrets["data_dir_1"]
     result_dir = st.secrets["result_dir"]
     serial_code = st.secrets["serial_code_1"]
     data_path_list = load_data(conn, bucket_name, data_dir)
-    
-    if not st.session_state.randomized:
-        random.seed(random.randint(0, 1000))
-        data_path_list = random.sample(data_path_list, len(data_path_list))
-        st.write("here")
-        st.session_state.randomized = True
         
+    if not "finished" in st.session_state:
+        st.session_state.finished = False
+    if not "data_path_list" in st.session_state:
+        st.session_state.data_path_list = random.sample(data_path_list, len(data_path_list))
+    
     label1_list = []
     label2_list = []
     label3_list = []
@@ -58,7 +49,7 @@ def main():
     label5_list = []
     ans_list = []
 
-    for i, data_path in enumerate(data_path_list):
+    for i, data_path in enumerate(st.session_state.data_path_list):
         df = conn.read(data_path)
         wav = df["wav"].values
         data_path = data_path.split("/")
@@ -72,7 +63,7 @@ def main():
         ans = st.radio(
             label=f"{label1}_{label2}_{label3}_{label4}_{label5}",
             options=("1:非常に悪い", "2:悪い", "3:普通", "4:良い", "5:非常に良い"),
-            # key=f"{i}",
+            key=f"{i}",
             horizontal=True,
             label_visibility="visible" if DEBUG else "collapsed",
             index=None,
