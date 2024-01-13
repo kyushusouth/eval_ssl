@@ -23,24 +23,28 @@ class MyAudio(Audio):
         
         
 @st.cache_data
-def load_data(_conn, bucket_name, data_dir):
+def load_data(
+    _conn: FilesConnection,
+    bucket_name: str,
+    data_dir: str,
+) -> list[str]:
     data_path_list = _conn.fs.glob(f"{bucket_name}/{data_dir}/**/*.csv")
     return data_path_list
 
 
 def finish(
-    conn,
-    bucket_name,
-    data_dir,
-    result_dir,
-    label1_list,
-    label2_list,
-    label3_list,
-    label4_list,
-    label5_list,
-    ans_nat_list,
-    ans_int_list,
-):
+    conn: FilesConnection,
+    bucket_name: str,
+    data_dir: str,
+    result_dir: str,
+    label1_list: list[str],
+    label2_list: list[str],
+    label3_list: list[str],
+    label4_list: list[str],
+    label5_list: list[str],
+    ans_nat_list: list[str],
+    ans_int_list: list[str],
+) -> None:
     if None in ans_nat_list or None in ans_int_list:
         st.session_state.answer_error = True
     else:
@@ -56,12 +60,12 @@ def finish(
             
             
 def template(
-    data_dir_name,
-    serial_number_name,
-    disc_title,
-    disc_remind,
-    debug,
-):
+    data_dir_name: str,
+    serial_number_name: str,
+    disc_title: str,
+    disc_remind: str,
+    debug: bool,
+) -> None:
     conn = st.connection("s3", type=FilesConnection)
     bucket_name = st.secrets["bucket_name"]
     data_dir = st.secrets[data_dir_name]
@@ -81,7 +85,7 @@ def template(
     data_path_list = load_data(conn, bucket_name, data_dir)
     if not "data_path_list" in st.session_state:
         st.session_state.data_path_list = random.sample(data_path_list, len(data_path_list))
-        
+
     st.markdown(
         f"""
         # 音声評価実験
